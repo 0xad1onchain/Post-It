@@ -48,7 +48,17 @@
         android:hint="Description - A brief information about the event"
         android:layout_height="wrap_content"
         android:id="@+id/description"/>
-    <EditText
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:clickable="true"
+            android:hint="Date"
+            android:id="@+id/editDate" />
+
+        <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Eligibility - Who is it for"

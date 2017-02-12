@@ -1,5 +1,7 @@
 package com.bookcoast.post_it;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,8 +10,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
@@ -39,16 +43,19 @@ public class TeacherAddEvent extends AppCompatActivity {
     String title, description, eligibility, contact, imgurl;
     boolean event;
     private Uri imageUri =null;
+    private int year_x, month_x, day_x;
     private Uri resultUri = null;
     private static  final  int GALLERY_REQUEST = 2;
     private EditText Elig;
     private StorageReference mImageReference;
     private DatabaseReference mDataBase;
     private ProgressDialog mProgress;
+    static final int DIALOG_ID = 0;
     private EditText Contact;
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
     private RadioGroup radioGroup;
+    private EditText dateText;
     private RadioButton radioButton;
     final Firebase ref1 = new Firebase("https://post-it-81fe6.firebaseio.com/");
 
@@ -75,11 +82,13 @@ public class TeacherAddEvent extends AppCompatActivity {
         mImageReference= FirebaseStorage.getInstance().getReference();
         mDataBase= FirebaseDatabase.getInstance().getReference().child("Blog");
         radioGroup = (RadioGroup) findViewById(R.id.radioType);
+        dateText = (EditText) findViewById(R.id.editDate);
 
 
 
         //get current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
 
 
         authListener = new FirebaseAuth.AuthStateListener() {
@@ -114,9 +123,40 @@ public class TeacherAddEvent extends AppCompatActivity {
 
         );
 
+        dateText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                showDialog(DIALOG_ID);
+                return true;
+
+            }
+        });
+
+
 
 
     }
+
+    @Override
+    protected Dialog onCreateDialog(int id)
+    {
+        if (id == DIALOG_ID)
+            return new DatePickerDialog(this, dpickerListener, year_x, month_x, day_x);
+        else
+            return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener dpickerListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+            year_x = i;
+            month_x = i1;
+            day_x = i2;
+            dateText.setText(day_x+"/"+month_x+"/"+year_x);
+        }
+    };
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
