@@ -32,6 +32,8 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.Calendar;
+
 
 public class TeacherAddEvent extends AppCompatActivity {
 
@@ -40,7 +42,7 @@ public class TeacherAddEvent extends AppCompatActivity {
     private ImageButton imageSelect;
     private EditText Title;
     private EditText Desc;
-    String title, description, eligibility, contact, imgurl;
+    String title, description, eligibility, contact, imgurl, date;
     boolean event;
     private Uri imageUri =null;
     private int year_x, month_x, day_x;
@@ -58,6 +60,7 @@ public class TeacherAddEvent extends AppCompatActivity {
     private EditText dateText;
     private RadioButton radioButton;
     final Firebase ref1 = new Firebase("https://post-it-81fe6.firebaseio.com/");
+
 
 
     @Override
@@ -83,6 +86,7 @@ public class TeacherAddEvent extends AppCompatActivity {
         mDataBase= FirebaseDatabase.getInstance().getReference().child("Blog");
         radioGroup = (RadioGroup) findViewById(R.id.radioType);
         dateText = (EditText) findViewById(R.id.editDate);
+
 
 
 
@@ -140,8 +144,13 @@ public class TeacherAddEvent extends AppCompatActivity {
     @Override
     protected Dialog onCreateDialog(int id)
     {
-        if (id == DIALOG_ID)
-            return new DatePickerDialog(this, dpickerListener, year_x, month_x, day_x);
+        if (id == DIALOG_ID) {
+            Calendar c = Calendar.getInstance();
+            int mYear = c.get(Calendar.YEAR);
+            int mMonth = c.get(Calendar.MONTH);
+            int mDay = c.get(Calendar.DAY_OF_MONTH);
+            return new DatePickerDialog(this, dpickerListener, mYear, mMonth, mDay);
+        }
         else
             return null;
     }
@@ -196,7 +205,16 @@ public class TeacherAddEvent extends AppCompatActivity {
                     contact = Contact.getText().toString();
                     // get selected radio button from radioGroup
                     int selectedId = radioGroup.getCheckedRadioButtonId();
+                    date = ""+year_x;
+                    if (month_x % 10 == 0)
+                        date = date + "0"+month_x;
+                    else
+                        date = date + month_x;
 
+                    if (day_x % 10 == 0)
+                        date = date + "0"+day_x;
+                    else
+                        date = date + day_x;
                     // find the radiobutton by returned id
                     radioButton = (RadioButton) findViewById(selectedId);
                     String temp = radioButton.getText().toString();
@@ -204,12 +222,12 @@ public class TeacherAddEvent extends AppCompatActivity {
                     if(temp.equals("Workshop / Event"))
                     {
                         event = true;
-                        ref1.child("event").child(title).setValue(obj);
+                        ref1.child("event").child(date).setValue(obj);
                     }
                     else
                     {
                         event = false;
-                        ref1.child("intern").child(title).setValue(obj);
+                        ref1.child("intern").child(date).setValue(obj);
                     }
                     Toast.makeText(getApplicationContext(), "This is my Toast message!"+temp,Toast.LENGTH_SHORT).show();
 
