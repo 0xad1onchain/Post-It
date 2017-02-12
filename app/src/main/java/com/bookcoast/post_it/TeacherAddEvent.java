@@ -25,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 
 public class TeacherAddEvent extends AppCompatActivity {
@@ -37,6 +39,7 @@ public class TeacherAddEvent extends AppCompatActivity {
     String title, description, eligibility, contact, imgurl;
     boolean event;
     private Uri imageUri =null;
+    private Uri resultUri = null;
     private static  final  int GALLERY_REQUEST = 2;
     private EditText Elig;
     private StorageReference mImageReference;
@@ -138,9 +141,9 @@ public class TeacherAddEvent extends AppCompatActivity {
     private void uploading() {
         mProgress.setMessage("Uploading...");
         mProgress.show();
-        if(imageUri != null){
-            StorageReference filePath= mImageReference.child("Blog_img").child(imageUri.getLastPathSegment());
-            filePath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        if(resultUri != null){
+            StorageReference filePath= mImageReference.child("Blog_img").child(resultUri.getLastPathSegment());
+            filePath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri downloadUri=taskSnapshot.getDownloadUrl();
@@ -185,9 +188,27 @@ public class TeacherAddEvent extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==GALLERY_REQUEST && resultCode==RESULT_OK){
             imageUri=data.getData();
-            imageSelect.setImageURI(imageUri);
+            CropImage.activity(imageUri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(16,9)
+                    .start(this);
 
 
+
+        }
+
+        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if(resultCode == RESULT_OK)
+            {
+                resultUri = result.getUri();
+                imageSelect.setImageURI(resultUri);
+
+            }
+            else if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
+            {
+                Exception error = result.getError();
+            }
         }
     }
 
