@@ -206,15 +206,19 @@ public class TeacherAddEvent extends AppCompatActivity {
                     // get selected radio button from radioGroup
                     int selectedId = radioGroup.getCheckedRadioButtonId();
                     date = ""+year_x;
-                    if (month_x % 10 == 0)
-                        date = date + "0"+month_x;
+                    if (month_x / 10 == 0)
+                    {date = date + "0"+month_x;
+//                        Log.d("df 10%0 is true", "onSuccess: ");
+                     }
                     else
-                        date = date + month_x;
+                    {   date = date + month_x;
+//                        Log.d("df 10%0 is false", "onSuccess: ");
+                    }
 
-                    if (day_x % 10 == 0)
-                        date = date + "0"+day_x;
+                    if (day_x / 10 == 0)
+                    {date = date + "0"+day_x;}
                     else
-                        date = date + day_x;
+                    {date = date + day_x;}
                     // find the radiobutton by returned id
                     radioButton = (RadioButton) findViewById(selectedId);
                     String temp = radioButton.getText().toString();
