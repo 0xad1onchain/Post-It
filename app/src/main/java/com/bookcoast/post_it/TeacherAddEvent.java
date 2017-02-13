@@ -210,7 +210,7 @@ public class TeacherAddEvent extends AppCompatActivity {
                     date1 = ""+day_x;
                     date1 = date1 + "/" + month_x;
                     date1 = date1 + "/" + year_x;
-                    description = description + "\n" + "date :" + date1;
+                    //description = description + "\n" + "date :" + date1;
                     // get selected radio button from radioGroup
                     int selectedId = radioGroup.getCheckedRadioButtonId();
                     date = ""+year_x;
@@ -246,7 +246,7 @@ public class TeacherAddEvent extends AppCompatActivity {
                         type = "intern";
 
                     }
-                    Data obj = new Data(title, description, eligibility, contact, imgurl, event, uid, type);
+                    Data obj = new Data(title, description, eligibility, contact, imgurl, event, uid, type, date1);
                     ref1.child(date).setValue(obj);
                     //Toast.makeText(getApplicationContext(), "This is my Toast message!"+temp,Toast.LENGTH_SHORT).show();
 

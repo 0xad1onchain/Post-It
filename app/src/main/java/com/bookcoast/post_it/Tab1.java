@@ -3,7 +3,6 @@ package com.bookcoast.post_it;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -49,18 +48,19 @@ public class Tab1 extends Fragment {
 
 
         Query userfEvents = mDatabase.orderByChild("type").equalTo("event");
-        FirebaseRecyclerAdapter<Post,PostviewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Post, PostviewHolder>(
-                Post.class,
+        FirebaseRecyclerAdapter<Data,PostviewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Data, PostviewHolder>(
+                Data.class,
                 R.layout.list_cards,
                 PostviewHolder.class,
                 userfEvents
 
         ) {
             @Override
-            protected void populateViewHolder(PostviewHolder viewHolder, Post model, int position) {
+            protected void populateViewHolder(PostviewHolder viewHolder, Data model, int position) {
                 viewHolder.setTitle(model.getTitle());
                 viewHolder.setdesc(model.getDescription());
                 viewHolder.setelig(model.getEligibility());
+                viewHolder.setdate(model.getDate());
                 viewHolder.setcontact(model.getContact());
                 viewHolder.setImage(getActivity().getApplicationContext(),model.getImgurl());
             }
@@ -87,6 +87,10 @@ public class Tab1 extends Fragment {
         public void setelig(String elig){
             TextView posttitle = (TextView) mview.findViewById(R.id.eligibility_rec);
             posttitle.setText("Eligibility: "+elig);
+        }
+        public void setdate(String date){
+            TextView posttitle = (TextView) mview.findViewById(R.id.date_rec);
+            posttitle.setText("Date: "+date);
         }
         public void setcontact(String contact){
             TextView posttitle = (TextView) mview.findViewById(R.id.contact_rec);

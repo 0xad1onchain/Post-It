@@ -39,6 +39,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/date_rec"
+            android:textSize="18dp"
+            android:text="date"
+            android:paddingLeft="12dp"
+            android:paddingBottom="4dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/eligibility_rec"
             android:textSize="18dp"
             android:text="eligibility"
