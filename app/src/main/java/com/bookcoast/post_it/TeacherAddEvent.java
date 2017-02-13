@@ -252,7 +252,7 @@ public class TeacherAddEvent extends AppCompatActivity {
                     mProgress.dismiss();
                     startActivity(new Intent(TeacherAddEvent.this, MainActivity.class));
                     finish();
-                    //Snackbar.make(view, "Thank you for using Post-It", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+//                    Snackbar.make(view, "Thank you for using Post-It", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             });
         }
