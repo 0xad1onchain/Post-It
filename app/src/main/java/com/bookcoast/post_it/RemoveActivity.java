@@ -29,7 +29,7 @@ public class RemoveActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private String uid;
     private Query userfEvents;
-    private FirebaseRecyclerAdapter<Post,PostviewHolder> firebaseRecyclerAdapter;
+    private FirebaseRecyclerAdapter<Data,PostviewHolder> firebaseRecyclerAdapter;
     private RecyclerView recylceview;
     private DatabaseReference mDatabase;
     final Firebase ref1 = new Firebase("https://post-it-81fe6.firebaseio.com/");
@@ -77,15 +77,15 @@ public class RemoveActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Query userfEvents = mDatabase.orderByChild("uid").equalTo(uid);
-          firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Post, PostviewHolder>(
-                Post.class,
+          firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Data, PostviewHolder>(
+                Data.class,
                 R.layout.list_cards,
                 PostviewHolder.class,
                 userfEvents
 
         ) {
             @Override
-            protected void populateViewHolder(PostviewHolder viewHolder, Post model, final int position) {
+            protected void populateViewHolder(PostviewHolder viewHolder, Data model, final int position) {
                 viewHolder.setTitle(model.getTitle());
                 viewHolder.setdesc(model.getDescription());
                 viewHolder.setelig(model.getEligibility());

@@ -228,10 +228,7 @@ public class TeacherAddEvent extends AppCompatActivity {
                     else
                     {date = date + day_x;}
 
-                    Random rand = new Random();
 
-                    int  n = rand.nextInt(80000000) + 11111111;
-                    date = date + n;
                     // find the radiobutton by returned id
                     radioButton = (RadioButton) findViewById(selectedId);
                     String temp = radioButton.getText().toString();
@@ -246,7 +243,11 @@ public class TeacherAddEvent extends AppCompatActivity {
                         type = "intern";
 
                     }
-                    Data obj = new Data(title, description, eligibility, contact, imgurl, event, uid, type, date1);
+                    Data obj = new Data(title, description, eligibility, contact, imgurl, event, uid, type, date);
+                    Random rand = new Random();
+
+                    int  n = rand.nextInt(80000000) + 11111111;
+                    date = date + n;
                     ref1.child(date).setValue(obj);
                     //Toast.makeText(getApplicationContext(), "This is my Toast message!"+temp,Toast.LENGTH_SHORT).show();
 
