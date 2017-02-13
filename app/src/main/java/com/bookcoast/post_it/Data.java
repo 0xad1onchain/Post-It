@@ -11,11 +11,12 @@ public class Data {
     String eligibility;
     String contact;
     String imgurl;
+    String uniqueID;
     boolean event;
 
     public Data()
     {}
-    public Data(String title, String description, String eligibility, String contact, String imgurl, boolean event) {
+    public Data(String title, String description, String eligibility, String contact, String imgurl, boolean event,String uid) {
       /*Blank default constructor essential for Firebase*/
         this.title = title;
         this.description = description;
@@ -23,6 +24,7 @@ public class Data {
         this.contact = contact;
         this.imgurl = imgurl;
         this.event = event;
+        this.uniqueID = uid;
 
     }
 
@@ -49,6 +51,10 @@ public class Data {
     public boolean getEvent()
     {
         return this.event;
+    }
+    public String getUid()
+    {
+        return this.uniqueID;
     }
 
 

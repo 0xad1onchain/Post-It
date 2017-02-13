@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,6 +32,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.Calendar;
+import java.util.Random;
 
 
 public class TeacherAddEvent extends AppCompatActivity {
@@ -44,6 +44,7 @@ public class TeacherAddEvent extends AppCompatActivity {
     private EditText Desc;
     String title, description, eligibility, contact, imgurl, date;
     boolean event;
+    private String uid = "";
     private Uri imageUri =null;
     private int year_x, month_x, day_x;
     private Uri resultUri = null;
@@ -107,6 +108,8 @@ public class TeacherAddEvent extends AppCompatActivity {
                 }
             }
         };
+        //Get UID of the user
+        uid = user.getUid();
 
         imageSelect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,10 +222,15 @@ public class TeacherAddEvent extends AppCompatActivity {
                     {date = date + "0"+day_x;}
                     else
                     {date = date + day_x;}
+
+                    Random rand = new Random();
+
+                    int  n = rand.nextInt(80000000) + 11111111;
+                    date = date + n;
                     // find the radiobutton by returned id
                     radioButton = (RadioButton) findViewById(selectedId);
                     String temp = radioButton.getText().toString();
-                    Data obj = new Data(title, description, eligibility, contact, imgurl, event);
+                    Data obj = new Data(title, description, eligibility, contact, imgurl, event, uid);
                     if(temp.equals("Workshop / Event"))
                     {
                         event = true;
@@ -233,12 +241,14 @@ public class TeacherAddEvent extends AppCompatActivity {
                         event = false;
                         ref1.child("intern").child(date).setValue(obj);
                     }
-                    Toast.makeText(getApplicationContext(), "This is my Toast message!"+temp,Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "This is my Toast message!"+temp,Toast.LENGTH_SHORT).show();
 
 
                     //ref1.child("post").child(title).setValue(obj);
                     //urltext.setText(downloadUri.toString());
                     mProgress.dismiss();
+                    startActivity(new Intent(TeacherAddEvent.this, MainActivity.class));
+                    finish();
                     //Snackbar.make(view, "Thank you for using Post-It", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             });
