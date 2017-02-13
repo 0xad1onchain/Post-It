@@ -16,6 +16,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
+import com.google.firebase.database.Query;
 
 /**
  * Created by Adi on 11/02/17.
@@ -23,11 +24,13 @@ import com.squareup.picasso.Picasso;
 public class Tab1 extends Fragment {
     private RecyclerView recylceview;
     private DatabaseReference mDatabase;
+    private Query mQuery;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab1, container, false);
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("intern");
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        Query userfEvents = mDatabase.orderByChild("type").equalTo("intern");
         Log.e("Before recycle", "");
         recylceview = (RecyclerView) rootView.findViewById(R.id.list);
         Log.e("After recycle", "");
@@ -41,11 +44,13 @@ public class Tab1 extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        Query userfEvents = mDatabase.orderByChild("type").equalTo("intern");
         FirebaseRecyclerAdapter<Post,PostviewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Post, PostviewHolder>(
                 Post.class,
                 R.layout.list_cards,
                 PostviewHolder.class,
-                mDatabase
+                userfEvents
+
         ) {
             @Override
             protected void populateViewHolder(PostviewHolder viewHolder, Post model, int position) {

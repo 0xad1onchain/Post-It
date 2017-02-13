@@ -59,6 +59,7 @@ public class TeacherAddEvent extends AppCompatActivity {
     private FirebaseAuth auth;
     private RadioGroup radioGroup;
     private EditText dateText;
+    private String type;
     private RadioButton radioButton;
     final Firebase ref1 = new Firebase("https://post-it-81fe6.firebaseio.com/");
 
@@ -230,17 +231,19 @@ public class TeacherAddEvent extends AppCompatActivity {
                     // find the radiobutton by returned id
                     radioButton = (RadioButton) findViewById(selectedId);
                     String temp = radioButton.getText().toString();
-                    Data obj = new Data(title, description, eligibility, contact, imgurl, event, uid);
+
                     if(temp.equals("Workshop / Event"))
                     {
-                        event = true;
-                        ref1.child("event").child(date).setValue(obj);
+                        //event = true;
+                        type = "event";
                     }
                     else
                     {
-                        event = false;
-                        ref1.child("intern").child(date).setValue(obj);
+                        type = "intern";
+
                     }
+                    Data obj = new Data(title, description, eligibility, contact, imgurl, event, uid, type);
+                    ref1.child(date).setValue(obj);
                     //Toast.makeText(getApplicationContext(), "This is my Toast message!"+temp,Toast.LENGTH_SHORT).show();
 
 

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -22,6 +23,7 @@ import com.squareup.picasso.Picasso;
 public class Tab2 extends Fragment {
     private RecyclerView recylceview;
     private DatabaseReference mDatabase;
+    private Query userfEvent;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -37,11 +39,12 @@ public class Tab2 extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        Query userfEvents = mDatabase.orderByChild("type").equalTo("event");
         FirebaseRecyclerAdapter<Post,PostviewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Post, PostviewHolder>(
                 Post.class,
                 R.layout.list_cards,
                 PostviewHolder.class,
-                mDatabase
+                userfEvents
         ) {
             @Override
             protected void populateViewHolder(PostviewHolder viewHolder, Post model, int position) {

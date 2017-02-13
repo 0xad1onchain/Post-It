@@ -12,11 +12,12 @@ public class Data {
     String contact;
     String imgurl;
     String uniqueID;
+    String type;
     boolean event;
 
     public Data()
     {}
-    public Data(String title, String description, String eligibility, String contact, String imgurl, boolean event,String uid) {
+    public Data(String title, String description, String eligibility, String contact, String imgurl, boolean event,String uid, String type) {
       /*Blank default constructor essential for Firebase*/
         this.title = title;
         this.description = description;
@@ -25,6 +26,7 @@ public class Data {
         this.imgurl = imgurl;
         this.event = event;
         this.uniqueID = uid;
+        this.type = type;
 
     }
 
