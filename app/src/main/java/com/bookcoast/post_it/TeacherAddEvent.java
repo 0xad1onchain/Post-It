@@ -162,7 +162,7 @@ public class TeacherAddEvent extends AppCompatActivity {
         @Override
         public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
             year_x = i;
-            month_x = i1;
+            month_x = i1 + 1;
             day_x = i2;
             dateText.setText(day_x+"/"+month_x+"/"+year_x);
         }
