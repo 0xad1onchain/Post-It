@@ -241,6 +241,7 @@ public class TeacherAddEvent extends AppCompatActivity {
                     else
                     {
                         type = "intern";
+                        date1="0";
 
                     }
                     Data obj = new Data(title, description, eligibility, contact, imgurl, event, uid, type, date);
