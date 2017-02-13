@@ -1,15 +1,15 @@
 package com.bookcoast.post_it;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,20 +20,16 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 public class RemoveActivity extends AppCompatActivity {
 
-    private String title;
-    private Button rmvBtn;
-    private EditText edit_title;
-    private StorageReference mImageReference;
-    //private DatabaseReference mDataBase;
+
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
     private String uid;
     private Query userfEvents;
+    private FirebaseRecyclerAdapter<Post,PostviewHolder> firebaseRecyclerAdapter;
     private RecyclerView recylceview;
     private DatabaseReference mDatabase;
     final Firebase ref1 = new Firebase("https://post-it-81fe6.firebaseio.com/");
@@ -45,13 +41,13 @@ public class RemoveActivity extends AppCompatActivity {
         setContentView(R.layout.activity_remove);
 
         Firebase.setAndroidContext(this);
-       edit_title = (EditText) findViewById(R.id.title_remove);
+
         auth = FirebaseAuth.getInstance();
         Firebase.setAndroidContext(this);
-       rmvBtn = (Button) findViewById(R.id.remove_btn);
+
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         uid = user.getUid();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("event");
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         //DatabaseReference chatRef = mDataBase.child("");
        Query userfEvents = mDatabase.orderByChild("uid").equalTo(uid);
         recylceview = (RecyclerView) findViewById(R.id.list);
@@ -74,19 +70,14 @@ public class RemoveActivity extends AppCompatActivity {
         };
 
 
-        rmvBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                removeEvent();
-            }
-        });
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Query userfEvents = mDatabase.orderByChild("uid").equalTo(uid);
-        FirebaseRecyclerAdapter<Post,PostviewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Post, PostviewHolder>(
+          firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Post, PostviewHolder>(
                 Post.class,
                 R.layout.list_cards,
                 PostviewHolder.class,
@@ -94,15 +85,50 @@ public class RemoveActivity extends AppCompatActivity {
 
         ) {
             @Override
-            protected void populateViewHolder(PostviewHolder viewHolder, Post model, int position) {
+            protected void populateViewHolder(PostviewHolder viewHolder, Post model, final int position) {
                 viewHolder.setTitle(model.getTitle());
                 viewHolder.setdesc(model.getDescription());
                 viewHolder.setelig(model.getEligibility());
                 viewHolder.setcontact(model.getContact());
                 viewHolder.setImage(getApplicationContext(),model.getImgurl());
+                viewHolder.mview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RemoveActivity.this);
+
+                        builder.setTitle("Confirm");
+                        builder.setMessage("Are you sure?");
+
+                        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Do nothing but close the dialog
+                                firebaseRecyclerAdapter.getRef(position).removeValue();
+                                dialog.dismiss();
+                            }
+                        });
+
+                        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                // Do nothing
+                                dialog.dismiss();
+                            }
+                        });
+
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+                });
             }
+
+
         };
         recylceview.setAdapter(firebaseRecyclerAdapter);
+
+
 
 
     }
@@ -136,31 +162,6 @@ public class RemoveActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            public void removeEvent()
-            {
-                title = edit_title.getText().toString();
-                if (title!= null) {
-                    ref1.child("event").child(title).removeValue();
-                    ref1.child("intern").child(title).removeValue();
-                }
-            }
 
     }
 

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private SwipeRefreshLayout swipeContainer;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.getTabAt(0).setIcon(R.drawable.briefcase); tabLayout.getTabAt(1).setIcon(R.drawable.certificate);
+        tabLayout.getTabAt(0).setIcon(R.drawable.certificate); tabLayout.getTabAt(1).setIcon(R.drawable.briefcase);
 
 
 
@@ -112,9 +114,9 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Internships";
-                case 1:
                     return "Events";
+                case 1:
+                    return "Internships";
                 case 2:
                     return "SECTION 3";
             }

@@ -3,6 +3,7 @@ package com.bookcoast.post_it;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,8 +16,8 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.squareup.picasso.Picasso;
 import com.google.firebase.database.Query;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by Adi on 11/02/17.
@@ -25,12 +26,13 @@ public class Tab1 extends Fragment {
     private RecyclerView recylceview;
     private DatabaseReference mDatabase;
     private Query mQuery;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab1, container, false);
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        Query userfEvents = mDatabase.orderByChild("type").equalTo("intern");
+        Query userfEvents = mDatabase.orderByChild("type").equalTo("event");
         Log.e("Before recycle", "");
         recylceview = (RecyclerView) rootView.findViewById(R.id.list);
         Log.e("After recycle", "");
@@ -44,7 +46,9 @@ public class Tab1 extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Query userfEvents = mDatabase.orderByChild("type").equalTo("intern");
+
+
+        Query userfEvents = mDatabase.orderByChild("type").equalTo("event");
         FirebaseRecyclerAdapter<Post,PostviewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Post, PostviewHolder>(
                 Post.class,
                 R.layout.list_cards,
@@ -95,4 +99,6 @@ public class Tab1 extends Fragment {
 
         }
     }
+
+
 }

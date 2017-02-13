@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 public class Choose_Activity extends AppCompatActivity {
 
 
@@ -20,6 +22,8 @@ public class Choose_Activity extends AppCompatActivity {
 
         student_button = (Button) findViewById(R.id.student_button_id);
         teacher_button = (Button) findViewById(R.id.teacher_button_id);
+
+        FirebaseMessaging.getInstance().subscribeToTopic("news");
 
         //student_button.setOnClickListener();
 

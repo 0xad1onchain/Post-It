@@ -4,6 +4,7 @@
     android:id="@+id/activity_remove"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -14,19 +15,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add the title of the event/internship to remove it"/>
+        android:text="Click an event to remove it"/>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Title"
-        android:id="@+id/title_remove"/>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Remove"
-        android:id="@+id/remove_btn"
-        />
+
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

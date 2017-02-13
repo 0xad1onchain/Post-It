@@ -28,7 +28,7 @@ public class Tab2 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab2, container, false);
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("event");
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         recylceview = (RecyclerView) rootView.findViewById(R.id.list);
         recylceview.setHasFixedSize(true);
         recylceview.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -39,7 +39,7 @@ public class Tab2 extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Query userfEvents = mDatabase.orderByChild("type").equalTo("event");
+        Query userfEvents = mDatabase.orderByChild("type").equalTo("intern");
         FirebaseRecyclerAdapter<Post,PostviewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Post, PostviewHolder>(
                 Post.class,
                 R.layout.list_cards,
