@@ -241,10 +241,11 @@ public class TeacherAddEvent extends AppCompatActivity {
                     else
                     {
                         type = "intern";
-                        date1="0";
+                        //date1="0";
 
                     }
-                    Data obj = new Data(title, description, eligibility, contact, imgurl, event, uid, type, date);
+
+                    Data obj = new Data(title, description, eligibility, contact, imgurl, event, uid, type, date1);
                     Random rand = new Random();
 
                     int  n = rand.nextInt(80000000) + 11111111;

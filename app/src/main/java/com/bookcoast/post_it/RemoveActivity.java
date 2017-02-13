@@ -89,6 +89,7 @@ public class RemoveActivity extends AppCompatActivity {
                 viewHolder.setTitle(model.getTitle());
                 viewHolder.setdesc(model.getDescription());
                 viewHolder.setelig(model.getEligibility());
+                viewHolder.setdate(model.getDate());
                 viewHolder.setcontact(model.getContact());
                 viewHolder.setImage(getApplicationContext(),model.getImgurl());
                 viewHolder.mview.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +151,10 @@ public class RemoveActivity extends AppCompatActivity {
         public void setelig(String elig){
             TextView posttitle = (TextView) mview.findViewById(R.id.eligibility_rec);
             posttitle.setText(elig);
+        }
+        public void setdate(String date){
+            TextView posttitle = (TextView) mview.findViewById(R.id.date_rec);
+            posttitle.setText("Date: "+date);
         }
         public void setcontact(String contact){
             TextView posttitle = (TextView) mview.findViewById(R.id.contact_rec);
