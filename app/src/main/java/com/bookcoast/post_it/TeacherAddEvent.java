@@ -42,7 +42,7 @@ public class TeacherAddEvent extends AppCompatActivity {
     private ImageButton imageSelect;
     private EditText Title;
     private EditText Desc;
-    String title, description, eligibility, contact, imgurl, date;
+    String title, description, eligibility, contact, imgurl, date,date1;
     boolean event;
     private String uid = "";
     private Uri imageUri =null;
@@ -207,6 +207,10 @@ public class TeacherAddEvent extends AppCompatActivity {
                     description = Desc.getText().toString();
                     eligibility = Elig.getText().toString();
                     contact = Contact.getText().toString();
+                    date1 = day_x.toString();
+                    date1 = date1 + "/" + month_x.toString();
+                    date1 = date1 + "/" + year_x.toString();
+                    description = description + "\n" + "date :" + date1;
                     // get selected radio button from radioGroup
                     int selectedId = radioGroup.getCheckedRadioButtonId();
                     date = ""+year_x;
