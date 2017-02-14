@@ -1,8 +1,12 @@
 //hey this is Anush
 package com.bookcoast.post_it;
+
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -66,7 +70,48 @@ public class TeacherLogin extends AppCompatActivity {
         });
 
 
+        btnSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(TeacherLogin.this);
 
+                builder.setTitle("Get an Account");
+                builder.setMessage("Are you an event organizer @ RIT? Please contact the Admin and get your Post-It account. ");
+
+                builder.setPositiveButton("Email", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing but close the dialog
+                        Intent i = new Intent(Intent.ACTION_SEND);
+                        i.setType("message/rfc822");
+                        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"adi.gupta13@gmail.com","pawanranjith@gmail.com","anush070@gmail.com"});
+                        i.putExtra(Intent.EXTRA_SUBJECT, "Request For Post-It signup");
+                        i.putExtra(Intent.EXTRA_TEXT   , "Please provide the official email of the organizer.\nOur admin will get in touch with with you \n\n\n\nThanks for opting Post-It.\nPlease delete the above content.");
+                        try {
+                            startActivity(Intent.createChooser(i, "Send mail..."));
+                        } catch (android.content.ActivityNotFoundException ex) {
+                            Toast.makeText(TeacherLogin.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                        }
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.setNegativeButton("Call", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse("tel:9483327370"));
+                        startActivity(intent);
+                        // Do nothing
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
 
 
 
