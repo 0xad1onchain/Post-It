@@ -1,5 +1,6 @@
 package com.bookcoast.post_it;
 
+import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -31,8 +33,17 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Random;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 public class TeacherAddEvent extends AppCompatActivity {
@@ -59,7 +70,11 @@ public class TeacherAddEvent extends AppCompatActivity {
     private FirebaseAuth auth;
     private RadioGroup radioGroup;
     private EditText dateText;
+    public String smessage;
+    public static final MediaType JSON
+            = MediaType.parse("application/json; charset=utf-8");
     private String type;
+    String notice= sendNotification();
     private RadioButton radioButton;
     final Firebase ref1 = new Firebase("https://post-it-81fe6.firebaseio.com/");
 
@@ -88,7 +103,7 @@ public class TeacherAddEvent extends AppCompatActivity {
         mDataBase= FirebaseDatabase.getInstance().getReference().child("Blog");
         radioGroup = (RadioGroup) findViewById(R.id.radioType);
         dateText = (EditText) findViewById(R.id.editDate);
-
+//listener
 
 
 
@@ -252,6 +267,14 @@ public class TeacherAddEvent extends AppCompatActivity {
                     date = date + n;
                     ref1.child(date).setValue(obj);
                     //Toast.makeText(getApplicationContext(), "This is my Toast message!"+temp,Toast.LENGTH_SHORT).show();
+                    try {
+                        Log.d("Notification message ","Inside top oncreate");
+                        String messageNotice= post();
+                        Log.d("Notification message ","The message id is "+messageNotice+" ");
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
 
 
                     //ref1.child("post").child(title).setValue(obj);
@@ -307,6 +330,52 @@ public class TeacherAddEvent extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @TargetApi(19)
+    String post() throws IOException {
+        Log.d("Notification message ","Inside post");
+        OkHttpClient client =new OkHttpClient();
+        Log.d("Notification message ","Inside  client");
+        RequestBody body = RequestBody.create(JSON,notice);
+        Log.d("Notification message ","Inside RequestBody");
+        Request request = new Request.Builder()
+                .url("https://fcm.googleapis.com/fcm/send")
+                //.addHeader("Content-Type","application/json")
+                .addHeader("Authorization","key=AIzaSyAUwmzrdGU3JnEfj1RFOESKomnPd7P-69Y")
+                .post(body)
+                .build();
+        Log.d("Notification message ","Inside Request only");
+        Call call =client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("Notification message ","Inside onFailure");
+                return;
 
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                Log.d("Notification message ","Inside onResponse");
+                smessage=response.body().string();
+
+            }
+        });
+        Log.d("Notification message ","The message got after is "+smessage+"  ");
+        return smessage;
+    }
+
+    public String sendNotification() {
+        Log.d("Notification message ","Inside top oncreate");
+        return "{\"to\":\"/topics/news\","
+                + "\"priority\":\"high\","
+                + "\"notification\" : {"
+                + "\"body\":\"Event is created Test notif from app \","
+                + "\"title\":\"New Event Check it Out\","
+                + "\"icon\":\"default\","
+                + "\"sound\":\"default\""
+                + "}"
+                + "}";
+    }
 
 }
